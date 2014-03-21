@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<title>CS183 Project Proposal</title>
+		
+		<style type="text/css">
+			p {font-size:12px;}
+		</style>
+	</head>
+
+	<body>
+
+		<!-- Header --> 
+
+		<center>
+			<h1>Facial Recognition for Occluded, Low Resolution Images</h1>
+			<p><i>
+				Computer Science 183 - Computer Vision - Dr. Lorenzo Torresani<br>
+				Project Proposal<br>
+				Project Members: Travis, Haider<br>
+				October 2nd, 2013
+			</i></p>
+		</center>
+		
+		<!-- Body --> 
+
+		<hr/>
+
+		<!-- THE PROBLEM-->
+
+		
+		<h3>1. The Problem</h3>
+		
+			<h5>1.1 Background</h5>
+
+			<p>
+				This project was inspired by work being done in Dr. David Kotz's Lab which addresses Security & Privacy 
+				issues in mobile healthcare devices. Some of the members of the lab were working with students from another
+				school to construct a low-cost and mobile device known as a <i>Spirometer</i> with a camera installed on it. 
+				A <i>Spirometer</i> is defined as:
+			</p>
+			
+			<center>
+				<p>
+					<i>
+						"...an apparatus for measuring the volume of air inspired and expired by the lungs. It is a precision 
+						differential pressure transducer for the measurements of respiration flow rates. <br> 
+						The spirometer records the amount of air and the rate of air that is breathed in and out over a specified period."
+					</i> [8]
+				</p>
+			</center>
+			
+			<p>
+				There are a number of reasons behind installing the camera on the device; two of the main reasons being:
+			</p>
+
+			<p>
+				<b>(1)</b> To ensure that the user of the device is who they say they are...
+				
+				<br><br>
+				
+				<b>(2)</b> To ensure that information about a valid user of the device is recorded under the appropriate record (assuming that multiple users are using this particular device)...
+			</p>
+			
+
+			<h5>1.2 What we will be working on...</h5>
+			
+			<p>
+				The lead-up to this project is interesting, but it should be clear that the scope of this project utilizes an already existing Spirometer device with a prototype camera installed. 
+				<b>We intend to address the problem of trying to recognize the person</b> that is using the device so that the system can leverage that information to 
+				determine if that person using the device is in fact a valid user of the device and/or that data about a user is recorded under the appropriate user's records.  
+			</p>
+
+			<p>
+				While facial identification is a relatively well explored area, even recent research (as recent as 2012) shows that methods for recognizing
+				faces have a much harder time when occlusions of the face you are trying to recognize are present.
+			</p>
+
+			<p>
+				In this project we hope to explore various methods (described below) to address the problem of facial recognition but with two primary challenges that make this problem fairly unique:
+			</p>
+
+			<p>
+				<b>(1)</b> The images we will be attempting to process with facial identification algorithms have low resolution due to the specs. of the camera and the need to send/retrieve images wirelessly.
+				(<b>Note:</b> the exact resolution of the images is unknown as there have been some delays on getting the concrete specs. for the camera). 
+				
+				<br><br>
+				
+				<b>(2)</b> The actual patient images will have a consistent occlusion due to the fact that an image of the user will be captured while the device is in use (i.e. while the mouth piece for the Spirometer
+				is in the user's mouth). However, we want to implement our algorithm in a more generic sense, whereby we can attempt to perform facial identification regardless of the type or location of the occlusion. 
+				
+				<br>
+			</p>
+
+		
+		<hr/>
+		
+		<!-- METHODS -->
+
+		<h3>2. Methods</h3>
+
+			<p>		
+				For our application, we want to identify the patient in our test image automatically 
+				by comparing the image against a pre-stored database of patient images. Our 
+				database and test images will be taken under similar settings. In every image, the 
+				patient will have a medical device in their mouth but may also have other occlusions 
+				covering their face; therefore, we want to design our algorithm so that it can deal 
+				with partial occlusions other than just the medical device that will be in the patient's 
+				mouth.
+			</p>		
+
+			<p>		
+				Face identification problems can be placed under two broad categories:
+			</p>		
+
+			<p>		
+				<b>(1)</b>
+					Example-based Methods -- such as Principal Component Analysis (PCA) [1], 
+					Independent Component Analysis [2] and Support Vector Machines (SVM) 
+					[3], use holistic image data to match test images against database images. 
+					The recognition performance of these methods can be reduced by the 
+					presence of partial occlusions [4].
+
+				<br><br>
+
+				<b>(2)</b>
+					Feature-based Methods -- use local features in the face to match test images 
+					to database images. Such methods are less sensitive to partial occlusions 
+					compared to example-based methods; however, it has been shown that 
+					incorporating apriori information about the partial occlusion into the 
+					recognition process can improve it's performance [4, 5, 6].
+			</p>		
+
+			<p>		
+				Min [4] presents an algorithm that addresses the problem of face recognition under 
+				occlusions. The approach starts by detecting the occlusions and then processing 
+				the non-occluded portion of the face separately [4]. The occlusion detection is done 
+				using Gabor wavelets, followed by PCA to reduce the dimensionality of the feature 
+				vector, and SVM while the occlusions are detected using local binary patterns. In 
+				our implementation, we will try similar approaches for the detection; however, we 
+				might also try other approaches such as the Scale-Invariant Feature Transform [7].
+			<p>		
+
+			<p>	
+				The patient images that we will get will be low-resolution images which poses an 
+				additional challenge for face recognition. The primary focus of our algorithm will 
+				be to detect partially occluded faces; however, we will try to construct the 
+				algorithm in such a way that it works well with low-resolution images. This would likely
+				mean that we would augment Min's algorithm so that the feature descriptors that it 
+				uses work well for low-resolution images.
+			</p>		
+		
+		<hr/>
+		
+		<!-- DATA SETS -->
+
+		<h3>3. Data Sets</h3>
+		
+			<p>
+				We have found a number of data sets that contain one of the two issues (low resolution or occluded) with the images that we are trying to address in our facial recognition algorithm. However, 
+				we have yet to locate a data set which contains images that accurately represent the problem we are really trying to address. We are hoping to receive test images captured from
+				the camera mentioned above that will be installed on the Spirometer device; but we are currently unable to count on having these at our disposal during the course of this
+				project. 
+			</p>		
+
+			<p>
+				For the time being, however, we intend to utilize a few primary data sets:
+			</p>		
+
+			<p>
+				<b>(1)</b> The 3D Face Database from the University of Milano Bicocca [9] contains some images with <i>occlusions of the lower-face</i>.
+
+				<br><br>
+				
+				<b>(2)</b> The Database of Faces [10] contains low resolution (92x112 pixels), grey-scale images of various subjects, taken at different times, with varying lighting, facial expressions, and facial details/occlusions.
+							Even though there is quite a bit of variation in these images, the subjects are said to be "in an upright, frontal position (with tolerance for some movement)." [10]				
+				<br>
+			</p>
+			
+
+		
+		<hr/>
+		
+		<!-- TIMELINE -->
+
+		<h3>4. Proposed Timeline</h3>
+		
+			<h5>4.1 Proposal</h5>
+				<p>
+					To start the process, we will do a comprehensive literature review and identify the 
+					current state-of-the-art methods for face identification in the presence of partial 
+					occlusions and for low-resolution images. 		
+				</p>
+		
+		
+			<h5>4.2 Milestone</h5>
+				<p>
+					Based on our initial review and subsequent research on the topic, we will decide on an algorithm to implement and what augmentations we will need to make 
+					in order to create an algorithm that is able to detect partial-occlusions in low-resolution images simultaneously. 
+					
+					By the milestone, we hope to have a rudimentary implementation of our algorithm with some test results of it's performance.
+				</p>
+
+		<hr/>
+
+		<!-- REFERENCES -->
+		
+		<h3>5. References</h3>
+
+			<p>
+				[1] M. Turk, and A. Pentland, 1991. "Eigenfaces for recognition," J. Cognitive Neuroscience, vol. 3, no. 1, pp. 71-86, Jan. 1991. 
+			</p>
+
+			<p>
+				[2] M. S. Bartlett, J. R. Movellan, and T. J. Sejnowski, "Face recognition by independent component analysis," IEEE Trans. Neural Netw., vol. 13, no. 6, pp. 1450-1464, Nov. 2002.
+			</p>
+
+			<p>
+				[3] V. Vapnik. Statistical Learning Theory. John Wiley and Sons, New York, 1998.
+			</p>
+
+			<p>
+				[4] R. Min , A. Hadid and J. L. Dugelay "Improving the recognition of faces occluded by facial accessories", Proc. IEEE Conf. Autom. Face Gesture Recognit., pp.442 -447 2011
+			</p>
+
+			<p>
+				[5] A. Rama, F. Tarres, L. Goldmann, and T. Sikora, "More robust face recognition by considering occlusion information," Automatic Face & Gesture Recognition, 2008. FG '08. 8th IEEE International Conference on , vol., no., pp.1-6, 17-19 Sept. 2008.
+			</p>
+
+			<p>
+				[6] H. J. Oh, K. M. Lee, and S. U. Lee, "Occlusion invariant face recognition using selective local non-negative matrix factorization basis images," Image Vision Comput., vol. 26, no. 11, pp. 1515-1523, Nov. 2008.
+			</p>
+
+			<p>
+				[7] Lowe, D.G.: Distinctive image features from scale-invariant keypoints. International Journal of Computer Vision 60 (2004) 91-110
+			</p>
+
+			<p>
+				[8] Spirometer Wikipedia <a href="http://en.wikipedia.org/wiki/Spirometer" target="_blank">http://en.wikipedia.org/wiki/Spirometer</a>
+			</p>
+
+			<p>
+				[9] The University of Milano Bicocca 3D Face Database <a href="http://www.ivl.disco.unimib.it/umbdb/index.html" target="_blank">http://www.ivl.disco.unimib.it/umbdb/index.html</a>
+			</p>
+
+			<p>
+				[10] The Database of Faces <a href="http://www.cl.cam.ac.uk/research/dtg/attarchive/facedatabase.html" target="_blank">http://www.cl.cam.ac.uk/research/dtg/attarchive/facedatabase.html</a>
+			</p>
+
+		<hr/>
+
+		<!-- Footer --> 
+		<footer>
+			<center>
+				<p><i>Last Modified: October 2nd, 2013</i></p>
+			</center>
+		</footer>
+			
+	</body>
+
+</html>
